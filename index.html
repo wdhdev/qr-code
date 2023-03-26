@@ -7,48 +7,45 @@
 
         <!-- HTML Meta Tags -->
         <title>QR Code Generator</title>
-        <meta name="description" content="A simple QR Code generator.">
 
-        <!-- Google / Search Engine Tags -->
-        <meta itemprop="name" content="QR Code Generator">
-        <meta itemprop="description" content="A simple QR Code generator.">
-        <meta itemprop="image" content="https://qrcode.wdh.gg/assets/screenshot.png">
-
-        <!-- Facebook Meta Tags -->
-        <meta property="og:url" content="https://qrcode.wdh.gg">
-        <meta property="og:type" content="website">
-        <meta property="og:title" content="QR Code Generator">
-        <meta property="og:description" content="A simple QR Code generator.">
-        <meta property="og:image" content="https://qrcode.wdh.gg/assets/screenshot.png">
-
-        <!-- Twitter Meta Tags -->
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="QR Code Generator">
-        <meta name="twitter:description" content="A simple QR Code generator.">
-        <meta name="twitter:image" content="https://qrcode.wdh.gg/assets/screenshot.png">
-
-        <!-- Stylesheets -->
-        <link rel="stylesheet" href="/css/index.css">
+        <!-- Scripts -->
+        <script src="https://cdn.tailwindcss.com"></script>
     </head>
 
-    <body>
-        <div class="wrapper">
-            <header>
-                <h1>QR Code Generator</h1>
-                <p>Enter a URL or some text to generate a QR code.</p>
-            </header>
+    <body class="p-8 max-w-md m-auto bg-zinc-900 text-white text-center">
+        <main>
+            <h1 class="text-3xl font-bold mb-2">QR Code Generator</h1>
+            <p class="mb-4">Enter a URL or some text to generate a QR code.</p>
 
-            <div class="form">
-                <input type="text" spellcheck="false" maxlength="2048" placeholder="URL or Text">
+            <input type="text" id="text" class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 mb-6" spellcheck="false" maxlength="2048" placeholder="Text / URL">
+            <button type="submit" id="btn" class="bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5">Generate</button>
 
-                <button>Generate</button>
-            </div>
+            <img id="qr-code" src="" class="mt-8 mx-auto hidden">
+        </main>
 
-            <div class="qr-code">
-                <img src="" alt="QR Code">
-            </div>
-        </div>
-
-        <script src="/js/generate.js"></script>
+        <footer class="mt-8">
+            <p>&copy; 2023 <span class="font-semibold">William Harrison</span> - All Rights Reserved.</p>
+        </footer>
     </body>
+
+    <script>
+        const text = document.getElementById("text");
+        const btn = document.getElementById("btn");
+        const img = document.getElementById("qr-code");
+
+        const generate = () => {
+            if(!text.value) return;
+
+            btn.setAttribute("disabled", true);
+            btn.innerHTML = "Generating...";
+
+            img.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${text.value.trim()}`;
+            img.classList.remove("hidden");
+
+            btn.removeAttribute("disabled");
+            btn.innerHTML = "Generate";
+        }
+
+        btn.onclick = generate;
+    </script>
 </html>
