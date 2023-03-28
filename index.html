@@ -17,8 +17,10 @@
             <h1 class="text-3xl font-bold mb-2">QR Code Generator</h1>
             <p class="mb-4">Enter a URL or some text to generate a QR code.</p>
 
-            <input type="text" id="text" class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 mb-6" spellcheck="false" maxlength="2048" placeholder="Text / URL">
-            <button type="submit" id="btn" class="bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5">Generate</button>
+            <form id="form" onsubmit="generateQR()">
+                <input type="text" id="text" class="block py-2.5 px-0 w-full text-sm bg-transparent border-0 border-b-2 appearance-none border-gray-600 focus:outline-none focus:ring-0 focus:border-blue-600 mb-6" spellcheck="false" maxlength="2048" placeholder="Text / URL" required>
+                <button type="submit" id="btn" class="bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5">Generate</button>
+            </form>
 
             <img id="qr-code" src="" class="mt-8 mx-auto hidden">
         </main>
@@ -29,12 +31,13 @@
     </body>
 
     <script>
+        const form = document.getElementById("form");
         const text = document.getElementById("text");
         const btn = document.getElementById("btn");
         const img = document.getElementById("qr-code");
 
-        const generate = () => {
-            if(!text.value) return;
+        async function generateQR() {
+            event.preventDefault();
 
             btn.setAttribute("disabled", true);
             btn.innerHTML = "Generating...";
@@ -42,10 +45,10 @@
             img.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${text.value.trim()}`;
             img.classList.remove("hidden");
 
+            form.reset();
+
             btn.removeAttribute("disabled");
             btn.innerHTML = "Generate";
         }
-
-        btn.onclick = generate;
     </script>
 </html>
